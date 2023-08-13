@@ -27,6 +27,7 @@ public class SlowJoystickDrive extends CommandBase {
   public void execute() {
     driveTrain.arcadeDrive(RobotContainer.joystick.getY() * 0.75,
         erf(RobotContainer.joystick.getX() / 1.5d) * 0.75d);
+    // sin(x) - sin(x / 2) seems to not be half bad as well
   }
 
   // Called once the command ends or is interrupted.

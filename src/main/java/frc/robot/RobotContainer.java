@@ -118,7 +118,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
     return autoChooser.getSelected();
   }
 
@@ -126,16 +125,17 @@ public class RobotContainer {
    * Call to stop everything on robot
    */
   public void stopRobot() {
+    // TODO: Add other stops
     driveTrain.stop();
   }
 
   /**
-   * Loads and returns Path Following command
+   * Loads and returns path following command
    * 
    * @param file          file extension to PathPlanner JSON
    * @param resetOdometry if true, odometry will be set to initial pose of
    *                      trajectory
-   * @return Ramsete Command for Path Following
+   * @return Ramsete command for path following
    */
   private Command loadPathPlannerTrajectory(String file, boolean resetOdometry) {
     file = pathToJSON(file) + ".wpilib.json";
@@ -188,7 +188,7 @@ public class RobotContainer {
   }
 
   /**
-   * Puts File extension in front of provided file, so all computers should be
+   * Puts file extension in front of provided file, so all computers should be
    * able to test paths
    * <p>
    * Note: May need to be changed if deploy directory is somewhere else...
@@ -211,6 +211,7 @@ public class RobotContainer {
    * <p>
    * <b>ONLY USE IF THERE ARE SINGLE PATHS FOR ALL AUTO PATHS (NOT NEEDED TO
    * CONTATENATE OTHER THINGS)</b>
+   * </p>
    * 
    */
   private void setPathOptions() {
