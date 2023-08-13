@@ -1,0 +1,98 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "Talon FX[10]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[20]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[2]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[30]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[3]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[40]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[4]": {
+        "header": {
+          "open": true
+        }
+      },
+      "navX-Sensor[0]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+      "/Shuffleboard/Autonomous/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/DifferentialDrive[1]": "DifferentialDrive",
+      "/SmartDashboard/Field": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/Field": {
+        "image": "/Users/coltenkiehne/Desktop/Screenshots/Screenshot 2023-04-30 at 16.06.16.png",
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "Shuffleboard": {
+      "Autonomous": {
+        "SendableChooser[0]": {
+          "open": true
+        },
+        "open": true
+      },
+      "open": true
+    },
+    "SmartDashboard": {
+      "open": true
+    },
+    "combined": true,
+    "transitory": {
+      "Shuffleboard": {
+        "Autonomous": {
+          "SendableChooser[0]": {
+            "open": true
+          },
+          "open": true
+        },
+        "open": true
+      },
+      "SmartDashboard": {
+        "open": true
+      }
+    }
+  }
+}
