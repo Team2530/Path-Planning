@@ -63,16 +63,18 @@ public class DriveTrain extends SubsystemBase {
         leftRear.setNeutralMode(NeutralMode.Brake);
 
         // Try calibrating NavX, and report if failed
-        try {
-            navX.reset();
-            navX.calibrate();
-            System.out.println("NavX Recalibrating...");
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            System.out.println("Sleep Failed, NavX may not be calibrated fully/correctly");
-            // e.printStackTrace();
-        }
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+                navX.reset();
+                navX.calibrate();
+                System.out.println("NavX Recalibrating...");
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                System.out.println("Sleep Failed, NavX may not be calibrated fully/correctly");
+                // e.printStackTrace();
+            }
+        }).start();
 
         odometry = new DifferentialDriveOdometry(navX.getRotation2d(), getLeftDistanceMeters(),
                 getRightDistanceMeters());

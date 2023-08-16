@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
@@ -25,9 +26,17 @@ public class SlowJoystickDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.arcadeDrive(RobotContainer.joystick.getY() * 0.75,
-        erf(RobotContainer.joystick.getX() / 1.5d) * 0.75d);
-    // sin(x) - sin(x / 2) seems to not be half bad as well
+
+    if (RobotBase.isReal()) {
+      driveTrain.arcadeDrive(RobotContainer.joystick.getY() * 0.75,
+          erf(RobotContainer.joystick.getZ() / 1.5d) * 0.75d);
+      // sin(x) - sin(x / 2) seems to not be half bad as well
+    } else {
+      driveTrain.arcadeDrive(RobotContainer.joystick.getY() * 0.75,
+          erf(RobotContainer.joystick.getX() / 1.5d) * 0.75d);
+      // sin(x) - sin(x / 2) seems to not be half bad as well
+    }
+
   }
 
   // Called once the command ends or is interrupted.

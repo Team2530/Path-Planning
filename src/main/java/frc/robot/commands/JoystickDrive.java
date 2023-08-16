@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
@@ -28,8 +29,15 @@ public class JoystickDrive extends CommandBase {
   @Override
   public void execute() {
     double drivePercentage = RobotContainer.joystick.getTrigger() ? 1 : 0.75;
-    driveTrain.arcadeDrive(RobotContainer.joystick.getY() * drivePercentage,
-        RobotContainer.joystick.getX() * drivePercentage);
+
+    if (RobotBase.isReal()) {
+      driveTrain.arcadeDrive(RobotContainer.joystick.getY() * drivePercentage,
+          RobotContainer.joystick.getZ() * drivePercentage);
+    } else {
+      driveTrain.arcadeDrive(RobotContainer.joystick.getY() * drivePercentage,
+          RobotContainer.joystick.getX() * drivePercentage);
+    }
+
   }
 
   // Called once the command ends or is interrupted.

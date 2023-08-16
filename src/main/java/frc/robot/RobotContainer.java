@@ -12,6 +12,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPRamseteCommand;
+
 import edu.wpi.first.math.controller.*;
 import edu.wpi.first.math.trajectory.*;
 import edu.wpi.first.wpilibj.*;
@@ -43,6 +48,8 @@ public class RobotContainer {
   // ---------- Commands ---------- \\
   private static final JoystickDrive normalJoystickDrive = new JoystickDrive(driveTrain);
   private static final SlowJoystickDrive slowJoystickDrive = new SlowJoystickDrive(driveTrain);
+
+  PathPlannerTrajectory trajectory = PathPlanner.loadPath("A", new PathConstraints(4, 4));
 
   private SendableChooser<Command> autoChooser = new SendableChooser<Command>() {
     {
