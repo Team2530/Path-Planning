@@ -45,12 +45,19 @@ public class DriveTrain extends SubsystemBase {
 
     public DriveTrain() {
         // Configure rear motors to follow front ones
-        leftRear.follow(leftFront);
-        rightRear.follow(rightFront);
+        // leftRear.follow(leftFront);
+        // rightRear.follow(rightFront);
 
         // Invert right side of drivetrain
-        leftMotors.setInverted(false);
-        rightMotors.setInverted(true);
+        leftFront.setInverted(false);
+        leftRear.setInverted(false);
+        rightFront.setInverted(true);
+        rightRear.setInverted(true);
+
+        // leftFront.setInverted(false);
+        // leftRear.setInverted(true);
+        // rightFront.setInverted(false);
+        // rightRear.setInverted(true);
 
         // Reset Encoder positions
         leftFront.setSelectedSensorPosition(0);
@@ -116,11 +123,11 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public double getLeftDistanceMeters() {
-        return -leftFront.getSelectedSensorPosition() * DriveConstants.kLinearDistanceConversionFactor;
+        return -leftFront.getSelectedSensorPosition() * DriveConstants.kLinearDistanceConversionFactor / 2048d;
     }
 
     public double getRightDistanceMeters() {
-        return rightFront.getSelectedSensorPosition() * DriveConstants.kLinearDistanceConversionFactor;
+        return -rightFront.getSelectedSensorPosition() * DriveConstants.kLinearDistanceConversionFactor / 2048d;
     }
 
     /* Meters / minute */
