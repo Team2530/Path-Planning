@@ -30,15 +30,15 @@ public final class Constants {
   public static class DriveConstants {
     // Motor Can ID's (Configured with Phoenix Tuner)
     public static final int kLEFT_FRONT_CAN_ID = 10;
-    public static final int kLEFT_REAR_CAN_ID = 30;
-    public static final int kRIGHT_FRONT_CAN_ID = 20;
+    public static final int kLEFT_REAR_CAN_ID = 20;
+    public static final int kRIGHT_FRONT_CAN_ID = 30;
     public static final int kRIGHT_REAR_CAN_ID = 40;
 
     // SysID Gains (Unknown as of right now)
-    public static final double ksVolts = 0.40322;
-    public static final double kvVoltSecondsPerMeter = 3.2976;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.67542;
-    public static final double kPDriveVel = 6.569;
+    public static final double ksVolts = 0.11455;
+    public static final double kvVoltSecondsPerMeter = 2.2002;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.3135;
+    public static final double kPDriveVel = 0.79737;
 
     // ! Unknown Value (Only needed for simulation)
     public static final double kDriveTrainMomentOfInertia = 4.8;
@@ -57,7 +57,7 @@ public final class Constants {
     public static final double kWheelRadiusInches = 3;
 
     public static final double kLinearDistanceConversionFactor = (Units
-        .inchesToMeters(1 / (kGearRatio * 2 * Math.PI * Units.inchesToMeters(kWheelRadiusInches)) * 10));
+        .inchesToMeters(1 / (kGearRatio * 2 * Math.PI * Units.inchesToMeters(kWheelRadiusInches))) * 10d);
 
   }
 }
