@@ -49,30 +49,30 @@ public class RobotContainer {
   private static final JoystickDrive normalJoystickDrive = new JoystickDrive(driveTrain);
   private static final SlowJoystickDrive slowJoystickDrive = new SlowJoystickDrive(driveTrain);
 
-  PathPlannerTrajectory trajectory = PathPlanner.loadPath("A", new PathConstraints(4, 4));
-
   private SendableChooser<Command> autoChooser = new SendableChooser<Command>() {
     {
       // ? Example 1 Piece Auto
-      setDefaultOption("1 Piece Auto", new SequentialCommandGroup(
-          setInitialAutoPose("1PieceStart"),
-          new PrintCommand("Auto Start"),
-          new PrintCommand("Placing Piece"),
-          new WaitCommand(3), // Grabber Place
-          new PrintCommand("Piece Placed"),
-          loadPathPlannerTrajectory("1PieceStart", true), // Go to grab piece
-          new InstantCommand(() -> driveTrain.stop()),
-          new PrintCommand("Arm Down"),
-          new WaitCommand(2), // Arm down
-          new PrintCommand("Piece Grabbed"),
-          new WaitCommand(2), // Pick arm back up
-          new PrintCommand("Arm Back Up"),
-          loadPathPlannerTrajectory("1PieceBack", false), // Go back to place piece
-          new InstantCommand(() -> driveTrain.stop()),
-          new WaitCommand(3), // Place piece
-          new PrintCommand("Piece Placed"),
-          new WaitCommand(2), // Whatever else
-          new PrintCommand("End Path")));
+      // setDefaultOption("1 Piece Auto", new SequentialCommandGroup(
+      // setInitialAutoPose("1PieceStart"),
+      // new PrintCommand("Auto Start"),
+      // new PrintCommand("Placing Piece"),
+      // new WaitCommand(3), // Grabber Place
+      // new PrintCommand("Piece Placed"),
+      // loadTrajectory("1PieceStart", true), // Go to grab piece
+      // new InstantCommand(() -> driveTrain.stop()),
+      // new PrintCommand("Arm Down"),
+      // new WaitCommand(2), // Arm down
+      // new PrintCommand("Piece Grabbed"),
+      // new WaitCommand(2), // Pick arm back up
+      // new PrintCommand("Arm Back Up"),
+      // loadTrajectory("1PieceBack", false), // Go back to place piece
+      // new InstantCommand(() -> driveTrain.stop()),
+      // new WaitCommand(3), // Place piece
+      // new PrintCommand("Piece Placed"),
+      // new WaitCommand(2), // Whatever else
+      // new PrintCommand("End Path")));
+
+      setDefaultOption("Test Path", loadTrajectory("TestPath", true));
     }
   };
 
@@ -144,15 +144,16 @@ public class RobotContainer {
    *                      trajectory
    * @return Ramsete command for path following
    */
-  private Command loadPathPlannerTrajectory(String file, boolean resetOdometry) {
-    file = pathToJSON(file) + ".wpilib.json";
+  private Command loadTrajectory(String file, boolean resetOdometry) {
+    file = pathToJSON(file);
     Trajectory trajectory;
     try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(file);
+      Path trajectoryPath = Paths.get(file);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException e) {
-      System.out.println(String.format("Cannot find path %s", file) + " " + e.getStackTrace().toString());
-      return new PrintCommand("Trajectory unable to be loaded, Auto is running...");
+      // System.out.println(String.format("Cannot find path %s", file) + " " +
+      // e.getStackTrace().toString());
+      return new PrintCommand("Trajectory unable to be loaded, Auto is running... \nCannot find path " + file);
     }
 
     RamseteCommand ramseteCommand = new RamseteCommand(trajectory, driveTrain::getPose,
@@ -180,10 +181,10 @@ public class RobotContainer {
    *         statin that the file couldn't be found
    */
   private Command setInitialAutoPose(String file) {
-    file = pathToJSON(file) + ".wpilib.json";
+    file = pathToJSON(file);
     Trajectory trajectory;
     try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(file);
+      Path trajectoryPath = Paths.get(file);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
       return new InstantCommand(() -> {
         driveTrain.resetOdometry(trajectory.getInitialPose());
@@ -204,36 +205,7 @@ public class RobotContainer {
    * @return String to path of file
    */
   private String pathToJSON(String pathName) {
-    Path currentPath = Paths.get("");
-    String path = currentPath.toAbsolutePath().toString()
-        // Check to see if path is correct
-        + "/src/main/java/frc/robot/deploy/deploy/pathplanner/generatedJSON/"
-        + pathName;
-    return path;
-  }
-
-  /**
-   * Finds all paths in pathplanner directory and sets them as options in the
-   * autochooser
-   * <p>
-   * <b>ONLY USE IF THERE ARE SINGLE PATHS FOR ALL AUTO PATHS (NOT NEEDED TO
-   * CONTATENATE OTHER THINGS)</b>
-   * </p>
-   * 
-   */
-  private void setPathOptions() {
-    String absolutePath = Paths.get("").toAbsolutePath().toString();
-    File[] autoPaths = new File(absolutePath + "/src/main/java/frc/robot/deploy/deploy/pathplanner/generatedJSON/")
-        .listFiles();
-
-    for (int i = 0; i < autoPaths.length; i++) {
-      // Set first one to default one
-      String name = autoPaths[i].getName().substring(0, autoPaths[i].getName().indexOf("."));
-      if (i == 0) {
-        autoChooser.setDefaultOption(name, loadPathPlannerTrajectory(pathToJSON(autoPaths[i].getName()), true));
-      } else {
-        autoChooser.addOption(name, loadPathPlannerTrajectory(pathToJSON(autoPaths[i].getName()), true));
-      }
-    }
+    return Filesystem.getDeployDirectory().toPath().toString() + "/pathplanner/generatedJSON/" + pathName
+        + ".wpilib.json";
   }
 }

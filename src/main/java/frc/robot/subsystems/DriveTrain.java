@@ -101,6 +101,8 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("Left Encoder", getLeftDistanceMeters());
         SmartDashboard.putNumber("Right Encoder", getRightDistanceMeters());
         SmartDashboard.putNumber("Heading", getHeading());
+        SmartDashboard.putNumber("Left Speed", getWheelSpeeds().leftMetersPerSecond);
+        SmartDashboard.putNumber("Right Speed", getWheelSpeeds().rightMetersPerSecond);
     }
 
     /**
@@ -132,12 +134,12 @@ public class DriveTrain extends SubsystemBase {
 
     /* Meters / minute */
     public double getLeftVelocity() {
-        return -leftFront.getSelectedSensorPosition() * DriveConstants.kLinearDistanceConversionFactor / 60;
+        return -leftFront.getSelectedSensorVelocity() * DriveConstants.kLinearDistanceConversionFactor / 60d / 2048d;
     }
 
     /* Meters / minute */
     public double getRightVelocity() {
-        return rightFront.getSelectedSensorPosition() * DriveConstants.kLinearDistanceConversionFactor / 60;
+        return -rightFront.getSelectedSensorVelocity() * DriveConstants.kLinearDistanceConversionFactor / 60d / 2048d;
     }
 
     public double getHeading() {
@@ -197,8 +199,8 @@ public class DriveTrain extends SubsystemBase {
      * @param meters
      */
     private void setLeftDistanceMeters(double meters) {
-        leftFront.setSelectedSensorPosition(meters / DriveConstants.kLinearDistanceConversionFactor);
-        leftRear.setSelectedSensorPosition(meters / DriveConstants.kLinearDistanceConversionFactor);
+        leftFront.setSelectedSensorPosition(meters / DriveConstants.kLinearDistanceConversionFactor * 2048d);
+        leftRear.setSelectedSensorPosition(meters / DriveConstants.kLinearDistanceConversionFactor * 2048d);
     }
 
     /**
@@ -207,8 +209,8 @@ public class DriveTrain extends SubsystemBase {
      * @param meters
      */
     private void setRightDistanceMeters(double meters) {
-        rightFront.setSelectedSensorPosition(meters / DriveConstants.kLinearDistanceConversionFactor);
-        rightRear.setSelectedSensorPosition(meters / DriveConstants.kLinearDistanceConversionFactor);
+        rightFront.setSelectedSensorPosition(meters / DriveConstants.kLinearDistanceConversionFactor * 2048d);
+        rightRear.setSelectedSensorPosition(meters / DriveConstants.kLinearDistanceConversionFactor * 2048d);
 
     }
 
@@ -220,7 +222,7 @@ public class DriveTrain extends SubsystemBase {
         driveSimulation.update(0.02);
 
         setLeftDistanceMeters(driveSimulation.getLeftPositionMeters());
-        setRightDistanceMeters(-driveSimulation.getRightPositionMeters());
+        setRightDistanceMeters(driveSimulation.getRightPositionMeters());
 
         int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
         SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));

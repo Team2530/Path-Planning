@@ -41,7 +41,7 @@ public final class Constants {
     public static final double kPDriveVel = 0.79737;
 
     // ! Unknown Value (Only needed for simulation)
-    public static final double kDriveTrainMomentOfInertia = 4.8;
+    public static final double kDriveTrainMomentOfInertia = 4.0;
     public static final double kTrackWidth = Units.inchesToMeters(23.014);
     public static final DifferentialDriveKinematics kKinematics = new DifferentialDriveKinematics(kTrackWidth);
 
