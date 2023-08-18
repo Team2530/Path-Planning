@@ -72,7 +72,16 @@ public class RobotContainer {
       // new WaitCommand(2), // Whatever else
       // new PrintCommand("End Path")));
 
-      setDefaultOption("Test Path", loadTrajectory("TestPath", true));
+      setDefaultOption("Test Path",
+          new SequentialCommandGroup(
+              setInitialAutoPose("Test Path"),
+              new InstantCommand(() -> {
+                driveTrain.stop();
+              }),
+              loadTrajectory("Test Path", true),
+              new InstantCommand(() -> {
+                driveTrain.stop();
+              })));
     }
   };
 

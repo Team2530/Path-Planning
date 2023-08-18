@@ -38,7 +38,8 @@ public final class Constants {
     public static final double ksVolts = 0.11455;
     public static final double kvVoltSecondsPerMeter = 2.2002;
     public static final double kaVoltSecondsSquaredPerMeter = 0.3135;
-    public static final double kPDriveVel = 0.79737;
+    // Acutal Value from Sysid : 0.79737
+    public static final double kPDriveVel = 0.8;
 
     // ! Unknown Value (Only needed for simulation)
     public static final double kDriveTrainMomentOfInertia = 4.0;
