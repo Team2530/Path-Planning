@@ -61,4 +61,13 @@ public final class Constants {
         .inchesToMeters(1 / (kGearRatio * 2 * Math.PI * Units.inchesToMeters(kWheelRadiusInches))) * 10d);
 
   }
+
+  public static class PortsConstants {
+    /* Servo Port */
+    public static final int GRABBER_PORT = 0;
+
+    // Arm motor ports
+    public static final int LINEAR_ACTUATOR_PORT = 14;
+    public static final int EXTENTION_PORT = 15;
+  }
 }

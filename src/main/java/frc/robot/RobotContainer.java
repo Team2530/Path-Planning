@@ -6,11 +6,13 @@ package frc.robot;
 
 import frc.robot.Constants.*;
 import frc.robot.commands.*;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.*;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -38,12 +41,15 @@ import edu.wpi.first.wpilibj2.command.button.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+  private double startTime = 0;
+
   // ---------- Controllers ---------- \\
   public static final XboxController xboxController = new XboxController(ControllerConstants.XBOX_CONTROLLER_PORT);
   public static final Joystick joystick = new Joystick(ControllerConstants.JOYSTICK_PORT);
 
   // --------- Subsystems ---------- \\
   private static final DriveTrain driveTrain = new DriveTrain();
+  private static final Arm arm = new Arm(driveTrain, joystick, xboxController);
 
   // ---------- Commands ---------- \\
   private static final JoystickDrive normalJoystickDrive = new JoystickDrive(driveTrain);
@@ -72,16 +78,45 @@ public class RobotContainer {
       // new WaitCommand(2), // Whatever else
       // new PrintCommand("End Path")));
 
-      setDefaultOption("Test Path",
+      setDefaultOption("Cone Test",
           new SequentialCommandGroup(
-              setInitialAutoPose("Test Path"),
+              setInitialAutoPose("Cone Test"),
+              new InstantCommand(() -> {
+                startTime = Timer.getFPGATimestamp();
+              }),
+              new InstantCommand(() -> {
+                arm.openGrabber(startTime);
+              }),
               new InstantCommand(() -> {
                 driveTrain.stop();
               }),
-              loadTrajectory("Test Path", true),
+              loadTrajectory("Cone Test", true),
               new InstantCommand(() -> {
                 driveTrain.stop();
-              })));
+              }),
+
+              new WaitUntilCommand(new BooleanSupplier() {
+                public boolean getAsBoolean() {
+                  boolean angle = arm.waitForArmAngle(-20.5);
+                  boolean extension = arm.waitForArmExtension(20.62);
+                  return angle && extension;
+                }
+              }),
+
+              new InstantCommand(() -> {
+                startTime = Timer.getFPGATimestamp();
+              }),
+
+              new WaitUntilCommand(new BooleanSupplier() {
+                public boolean getAsBoolean() {
+                  return arm.closeGrabber(startTime);
+                }
+              }),
+
+              new WaitUntilCommand(arm::zeroArm)
+
+          ));
+
     }
   };
 
